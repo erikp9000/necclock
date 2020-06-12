@@ -1,16 +1,21 @@
 # Read/write realtime clock chip
 
 Card: Turner Hall Publishing by Symantec
+
 Chip: NEC uPD1990AC
+
 Memory expansion: 256K
+
 
 I couldn't find a driver for this RTC chip so I decoded the bus I/O port (see PDF)
 and wrote my own program to read/write the clock.
 
-The board is a-bit ISA memory expansion and RTC card from Turner Hall
+The board is an 8-bit ISA memory expansion and RTC card from Turner Hall
 Publishing. There is a picture of the board in this project.
 
-This clock chip does not store the year!
+This clock chip does not store the year! The program writes NECCLOCK.BIN in order
+to recover the year on the next reboot. It does handle a new year rollover that
+might occur while the machine is off.  It also handles leap years.
 
 ## Usage
   - No arguments - Read RTC and set DOS time
