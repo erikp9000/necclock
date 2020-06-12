@@ -2,7 +2,13 @@
 
 Card: Turner Hall Publishing by Symantec
 Chip: NEC uPD1990AC
-Memory expansion: 
+Memory expansion: 256K
+
+I couldn't find a driver for this RTC chip so I decoded the bus I/O port (see PDF)
+and wrote my own program to read/write the clock.
+
+The board is a-bit ISA memory expansion and RTC card from Turner Hall
+Publishing. There is a picture of the board in this project.
 
 This clock chip does not store the year!
 
