@@ -17,6 +17,14 @@ This clock chip does not store the year! The program writes NECCLOCK.BIN in orde
 to recover the year on the next reboot. It does handle a new year rollover that
 might occur while the machine is off.  It also handles leap years.
 
+## Assembly Instructions
+The source is written to be assembled with Microsoft Assembler (MASM) and Linker (LINK).
+
+```
+C> MASM NECCLOCK
+C> LINK NECCLOCK
+```
+
 ## Usage
   - No arguments - Read RTC and set DOS time
   - /s - Read DOS time and set RTC
@@ -42,3 +50,8 @@ year it sets will be off by the number of years it hasn't been booted (less one)
   - Display time
   - Write timebuf to NECCLOCK.BIN
   - Write timebuf to RTC
+
+## Known Issues
+The `/s` argument is not properly supported. If there are any characters, including
+the space character, following `NECCLOCK` the program will perform the 
+'Read DOS time and set RTC' function.
