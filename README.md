@@ -10,9 +10,10 @@
 
 
 ### Turner Hall Publishing by Symantec
-![Turner Hall image](https://github.com/erikp9000/necclock/blob/master/images/Turner-Hall-Publishing-Memory-Expansion.png)
+![Turner Hall image](images/Turner-Hall-Publishing-Memory-Expansion.png)
 
-I couldn't find a driver for this RTC chip so I decoded the bus I/O port (see [PDF]( https://github.com/erikp9000/necclock/blob/master/images/IO-bus-decode.pdf) 
+I couldn't find a driver for this RTC chip so I decoded the bus I/O port 
+(see [PDF]( images/IO-bus-decode.pdf) 
 and wrote my own program to read/write the clock.
 
 The board is an 8-bit ISA memory expansion and RTC card from Turner Hall
@@ -25,7 +26,7 @@ It also handles leap years. If the computer is not booted at least once a year, 
 year it sets will be off by the number of years it hasn't been booted (less one).
 
 ### CTE Research 401B
-![CTE-410B image](https://github.com/erikp9000/necclock/blob/master/images/CTE410B.jpg)
+![CTE-410B image](images/CTE410B.jpg)
 
 User [siordon]( https://github.com/siordon ) was looking for a program to read/write
 the RTC on this card and asked if NECCLOCK would work. It did not work because the 
@@ -50,7 +51,7 @@ C> LINK NECCLOCK
 ```
 Usage: C> NECCLOCK <flags>
 
-Card select flags:',CR,LF
+Card select flags:
 /ct         Turner Hall Publishing 256KB memory expansion w/NEC uPD1990AC RTC
 /cc         CTE Research CTE-410B multi-function I/O w/NEC uPD4990AC RTC
 
