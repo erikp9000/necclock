@@ -12,12 +12,12 @@
 ### Turner Hall Publishing by Symantec
 ![Turner Hall image](images/Turner-Hall-Publishing-Memory-Expansion.png)
 
-I couldn't find a driver for this RTC chip so I decoded the bus I/O port 
-(see [PDF]( images/IO-bus-decode.pdf) 
-and wrote my own program to read/write the clock.
-
 The board is an 8-bit ISA memory expansion and RTC card from Turner Hall
 Publishing.
+
+I couldn't find a driver for its RTC chip (NEC uPD1990AC) so I decoded the 
+bus I/O port (see [PDF](images/IO-bus-decode.pdf))
+and wrote my own program to read/write the clock.
 
 This clock chip does not store the year! The program writes NECCLOCK.BIN 
 in the current working directory to recover the year on the next reboot. 
@@ -25,17 +25,19 @@ It does handle a new year rollover that might occur while the machine is off.
 It also handles leap years. If the computer is not booted at least once a year, the
 year it sets will be off by the number of years it hasn't been booted (less one).
 
-### CTE Research 401B
+### CTE Research 410B
 ![CTE-410B image](images/CTE410B.jpg)
 
 User [siordon]( https://github.com/siordon ) was looking for a program to read/write
-the RTC on this card and asked if NECCLOCK would work. It did not work because the 
-I/O port address and registers are different. However, the chip is backwards
-compatible so we reverse-engineered the card and added support for reading and writing
-the RTC. Special thanks to siordon for all the hardware tracing and software testing!
+the RTC (NEC uPD4990AC) on this card and asked if NECCLOCK would work. It did not 
+work because the I/O port address and registers are different. However, the chip is 
+backwards compatible so we traced the I/O lines on the card (see [PDF](images/CTE410B-IO-bus-decode.pdf))
+and added support to NECCLOCK for reading and writing the RTC. 
 
 This RTC does store the year and handles leap years so NECCLOCK.BIN is not created
 or used.
+
+Special thanks to siordon for all the hardware tracing and software testing!
 
 
 
