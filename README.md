@@ -1,21 +1,45 @@
 # Read/write realtime clock chip
 
-Card: Turner Hall Publishing by Symantec
+## Supported Cards
+- Turner Hall Publishing by Symantec
+  - Memory expansion: 256K
+  - RTC: NEC uPD1990AC @2c0h-2c2h
+- CTE Research 410B (New for version 2.0)
+  - Multi-function I/O card
+  - RTC: NEC uPD4990AC @240h
 
-Chip: NEC uPD1990AC
 
-Memory expansion: 256K
-
-
-I couldn't find a driver for this RTC chip so I decoded the bus I/O port (see PDF)
-and wrote my own program to read/write the clock.
+### Turner Hall Publishing by Symantec
+![Turner Hall image](images/Turner-Hall-Publishing-Memory-Expansion.png)
 
 The board is an 8-bit ISA memory expansion and RTC card from Turner Hall
-Publishing. There is a picture of the board in this project.
+Publishing.
 
-This clock chip does not store the year! The program writes NECCLOCK.BIN in order
-to recover the year on the next reboot. It does handle a new year rollover that
-might occur while the machine is off.  It also handles leap years.
+I couldn't find a driver for its RTC chip (NEC uPD1990AC) so I decoded the 
+bus I/O port (see [PDF](images/IO-bus-decode.pdf))
+and wrote my own program to read/write the clock.
+
+This clock chip does not store the year! The program writes NECCLOCK.BIN 
+in the current working directory to recover the year on the next reboot. 
+It does handle a new year rollover that might occur while the machine is off. 
+It also handles leap years. If the computer is not booted at least once a year, the
+year it sets will be off by the number of years it hasn't been booted (less one).
+
+### CTE Research 410B
+![CTE-410B image](images/CTE410B.jpg)
+
+User [siordon]( https://github.com/siordon ) was looking for a program to read/write
+the RTC (NEC uPD4990AC) on this card and asked if NECCLOCK would work. It did not 
+work because the I/O port address and registers are different. However, the chip is 
+backwards compatible so we traced the I/O lines on the card (see [PDF](images/CTE410B-IO-bus-decode.pdf))
+and added support to NECCLOCK for reading and writing the RTC. 
+
+This RTC does store the year and handles leap years so NECCLOCK.BIN is not created
+or used.
+
+Special thanks to siordon for all the hardware tracing and software testing!
+
+
 
 ## Assembly Instructions
 The source is written to be assembled with Microsoft Assembler (MASM) and Linker (LINK).
@@ -26,32 +50,17 @@ C> LINK NECCLOCK
 ```
 
 ## Usage
-  - No arguments - Read RTC and set DOS time
-  - /s - Read DOS time and set RTC
+```
+Usage: C> NECCLOCK <flags>
 
-NECCLOCK.BIN is created in the current working directory. This file stores
-the date/time when the clock was set/read so a rollover to the new year
-can be detected. If the computer is not booted at least once a year, the
-year it sets will be off by the number of years it hasn't been booted (less one).
+Card select flags:
+/ct         Turner Hall Publishing 256KB memory expansion w/NEC uPD1990AC RTC
+/cc         CTE Research CTE-410B multi-function I/O w/NEC uPD4990AC RTC
 
-### Read RTC and set DOS time
-  - If clock is not found, print error and exit
-  - If NECCLOCK.BIN is not found, print error and exit
-  - Read NECCLOCK.BIN into filebuf
-  - Read RTC into timebuf
-  - If RTC month is less than filebuf month, increment timebuf year
-  - If leap year and filebuf month is 28 Feb or earlier, remove 1 day
-  - Write timebuf to NECCLOCK.BIN
-  - Display time
-  - Set DOS time
-  
-### Read DOS time and set RTC
-  - Get DOS time
-  - Display time
-  - Write timebuf to NECCLOCK.BIN
-  - Write timebuf to RTC
+Function flags:
+            Print RTC time
+/s          Write RTC to DOS date/time
+/i          Write DOS date/time to RTC
 
-## Known Issues
-The `/s` argument is not properly supported. If there are any characters, including
-the space character, following `NECCLOCK` the program will perform the 
-'Read DOS time and set RTC' function.
+```
+
